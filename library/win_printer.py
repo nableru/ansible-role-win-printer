@@ -39,13 +39,13 @@ options:
       - comment of the printer
     required: false
     default: null
-  
+
   location:
     description:
       - Location String of the Printer
     required: false
     default: null
-    
+
   publish:
     description
       - Publish this Printer into Active Directory
@@ -55,7 +55,7 @@ options:
     description:  
       - Name of the Printer Port to Use
     required: true
-  
+
   printer_driver:
     description:
       - Name of the Printer Driver to use
@@ -68,7 +68,7 @@ options:
       - "present"
       - "absent"
     default: "present
-    
+
 author: David Baumann
 '''
 

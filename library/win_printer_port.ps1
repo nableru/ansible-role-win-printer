@@ -14,28 +14,45 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#Requires -Module Ansible.ModuleUtils.Legacy
+#AnsibleRequires -CSharpUtil Ansible.Basic
 
 $ErrorActionPreference = 'Stop';
-
 
 $result = @{
   changed = $false
 }
 
+$spec = @{
+    options = @{
+        port_name = @{ type = "str" }
+        host_address = @{ type = "str" }
+        snmp_index = @{ type = "str"; default = "1" }
+        snmp_community = @{ type = "str"; default = "public" }
+        snmp_enabled = @{ type = "bool"; default = $false }
+        state = @{ type = "str"; choices = "absent", "present"; default = "present" }
+    }
+    required_if = @(
+        @("state", "present", @("host_address", "port_name"), $true),
+        @("state", "absent", @("host_address", "port_name"), $true)
+    )
+    supports_check_mode = $true
+}
+
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+$check_mode = $module.CheckMode
+
+
 $default_port_number = 9100
 $default_protocol = 1 # 1 = Raw 2 = LPR
 $default_temporary_port = "LPT1:"
 
-$params = Parse-Args -arguments $args -supports_check_mode $true;
-$check_mode = Get-AnsibleParam -obj $params -name "_ansible_check_mode" -type "bool" -default $false;
-$diff_mode = Get-AnsibleParam -obj $params -name "_ansible_diff" -type "bool" -default $false;
-
-$port_name = Get-AnsibleParam -obj $params -name "port_name" -type "str" -failifempty $true
-$host_address = Get-AnsibleParam -obj $params -name "host_address" -type "str" -failifempty $true
-$snmp_index = Get-AnsibleParam -obj $params -name "snmp_index" -type "int" -default 1
-$snmp_community = Get-AnsibleParam -obj $params -name "snmp_community" -type "str" -default "public"
-$snmp_enabled = Get-AnsibleParam -obj $params -name "snmp_enabled" -type "bool" -default $true
-$state = Get-AnsibleParam -obj $params -name "state" -validateset "present","absent" -default "present";
+$port_name = $module.Params.port_name
+$host_address = $module.Params.host_address
+$snmp_index = $module.Params.snmp_index
+$snmp_community = $module.Params.snmp_communtiy
+$snmp_enabled = $module.Params.snmp_enabled
+$state = $module.Params.state
 
 function Test-PrinterPortExists()
 {

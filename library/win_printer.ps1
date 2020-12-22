@@ -17,6 +17,8 @@
 # WANT_JSON
 # POWERSHELL_COMMON
 
+#Requires -Module Ansible.ModuleUtils.Legacy
+
 $ErrorActionPreference = 'Stop';
 
 $result = @{

@@ -43,13 +43,13 @@ options:
       - SNMP Index of the Printer
     requried: false
     default: 1
-  
+
   snmp_community:
     description:
       - SNMP community where the printer port query status
     required: false
     default: public
-  
+
   snmp_enabled:
     description
       - SNMP Status query enabled
@@ -63,7 +63,7 @@ options:
       - "present"
       - "absent"
     default: "present
-    
+
 author: David Baumann
 '''
 

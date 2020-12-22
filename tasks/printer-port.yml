@@ -5,3 +5,4 @@
     snmp_index: "{{ item.network.snmp_index | default(1) }}"
     snmp_community: "{{ item.network.snmp_community | default('public') }}"
     snmp_enabled: "{{ item.network.snmp_enabled | default(true) }}"
+    state: "{{ item.state | default('present') }}"
